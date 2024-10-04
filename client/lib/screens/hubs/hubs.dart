@@ -1,32 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:client/screens/theme.dart';
-import 'package:client/screens/hubs/home.dart';
-import 'package:client/screens/hubs/notify.dart';
-import 'package:client/screens/hubs/profile.dart';
-import 'package:client/screens/hubs/search.dart';
+import '../theme.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-
-const hubUIList = [
-    Home(),
-    Search(),
-    Notify(),
-    Profile(),
-];
-
-const hubTitleList = [
-    "home",
-    "seach",
-    "notice",
-    "profile",
-];
-
-const hubIconList = [
-    Icons.home,
-    Icons.search,
-    Icons.notifications,
-    Icons.person,
-];
+import 'ui/navigation_bar.dart';
+import 'post.dart';
+import 'home.dart';
+import 'notify.dart';
+import 'profile.dart';
+import 'search.dart';
+import 'ui/app_bar.dart';
 
 ///////////////////////////////////////////////////
 
@@ -38,23 +19,42 @@ class Hubs extends HookWidget {
     final index = useState(0);
 
     return Scaffold(
-        appBar: AppBar(
-            title: const Text("EmoNS"),
-            backgroundColor: green
-        ),
-        body: hubUIList[index.value],
-        bottomNavigationBar: ConvexAppBar(
-            style: TabStyle.react,
-            backgroundColor: green,
-            items: [
-                for(int i=0; i<hubUIList.length; i++)
-                TabItem(icon: hubIconList[i], title: hubTitleList[i])
-            ],
-            initialActiveIndex: 0,
-            onTap: (int i) => index.value = i
-        )
-    );
+        appBar: appBar,
+        body: HubLists.ui[index.value],
+        bottomNavigationBar: EmonsNavigationBar(
+        currentIndex: index.value,
+        changeIndex: (int newIndex) {
+          index.value = newIndex;
+        }));
   }
 }
 
 ///////////////////////////////////////////////////
+
+class HubLists {
+  static const ui = [
+    Home(),
+    Search(),
+    Post(),
+    Notify(),
+    Profile(),
+  ];
+
+  static const label = [
+    "home",
+    "seach",
+    "notice",
+    "profile",
+  ];
+
+  static const icon = [
+    Icons.home,
+    Icons.search,
+    Icons.notifications,
+    Icons.person,
+  ];
+
+  static const selectedIcon = [
+
+  ];
+}
